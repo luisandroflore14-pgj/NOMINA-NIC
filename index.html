@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NominaNIC Pro</title>
+
+<style>
+
+/* ===================================================== */
+/* MODAL ELIMINAR                                        */
+/* ===================================================== */
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:
+    rgba(0,0,0,.4);
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.modal-content{
+
+    background:#FFF8F0;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    width:380px;
+
+    max-width:90%;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.25);
+
+    text-align:center;
+
+}
+
+.modal-content h2{
+
+    color:#7F1D1D;
+
+    margin-bottom:15px;
+
+}
+
+.modal-content p{
+
+    color:#444;
+
+    margin-bottom:25px;
+
+}
+
+.modal-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+}
+
+.btn-cancelar{
+
+    background:#6B7280;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}
+
+.btn-eliminar{
+
+    background:#DC2626;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+}
+
+.btn-cancelar:hover{
+
+    background:#4B5563;
+
+}
+
+.btn-eliminar:hover{
+
+    background:#B91C1C;
+
+}
+
+/* ===================================================== */
+/* NOMINANIC PRO V1                                      */
+/* MODULOS INCLUIDOS                                     */
+/* 1. CONFIGURACION                                      */
+/* 2. DISEÑO                                             */
+/* 3. SIDEBAR                                            */
+/* 4. DASHBOARD                                          */
+/* 5. NAVEGACION                                         */
+/* 6. MODO OSCURO                                        */
+/* ===================================================== */
+
+:root{
+
+--bg:#ffffff;
+--bg-secondary:#f8fafc;
+--sidebar:#1e293b;
+
+--text:#1e293b;
+--text-light:#64748b;
+
+--border:#e2e8f0;
+
+--navy:#16324f;
+--emerald:#0f766e;
+--gold:#c9a227;
+--accent:#c9a227;
+
+--shadow:
+0 8px 20px rgba(0,0,0,.08);
+
+--transition:.25s ease;
+
+}
+
+body.dark{
+
+--bg:#191919;
+--bg-secondary:#202020;
+--sidebar:#111827;
+
+--text:#ededed;
+--text-light:#9b9b9b;
+
+--border:#323232;
+
+--navy:#2563eb;
+--emerald:#10b981;
+--gold:#d4af37;
+
+--shadow:
+0 8px 20px rgba(0,0,0,.25);
+
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI",sans-serif;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+transition:var(--transition);
+overflow-x:hidden;
+}
+
+.app{
+display:flex;
+min-height:100vh;
+}
+
+/* ===================================================== */
+/* SIDEBAR                                               */
+/* ===================================================== */
+
+.sidebar{
+
+width:260px;
+background:var(--sidebar);
+
+color:white;
+
+position:fixed;
+
+top:0;
+left:0;
+
+height:100vh;
+
+padding:20px;
+
+transition:var(--transition);
+
+overflow:hidden;
+
+}
+
+.sidebar.collapsed{
+width:80px;
+}
+
+.logo{
+
+display:flex;
+align-items:center;
+
+gap:12px;
+
+margin-bottom:35px;
+}
+
+.logo-box{
+
+width:42px;
+height:42px;
+
+background:var(--accent);
+
+color:black;
+
+font-weight:bold;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:12px;
+
+flex-shrink:0;
+}
+
+.logo-text{
+transition:.25s;
+}
+
+.sidebar.collapsed .logo-text{
+
+    opacity:0;
+
+    visibility:hidden;
+
+    width:0;
+
+    overflow:hidden;
+
+}
+
+.sidebar.collapsed .logo{
+
+    justify-content:center;
+
+}
+
+.logo{
+
+    height:42px;
+
+}
+
+/* ===================================================== */
+/* MENU                                                  */
+/* ===================================================== */
+
+.menu{
+
+display:flex;
+flex-direction:column;
+
+gap:8px;
+}
+
+.menu button{
+
+border:none;
+
+background:none;
+
+color:white;
+
+padding:12px;
+
+text-align:left;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-size:15px;
+
+transition:.2s;
+}
+
+.menu button:hover{
+
+background:#334155;
+}
+
+.menu button.active{
+
+background:var(--accent);
+
+color:white;
+
+border-left:
+4px solid white;
+
+}
+
+.sidebar.collapsed button{
+
+    justify-content:center;
+
+}
+
+/* ===================================================== */
+/* BOTON MENU                                            */
+/* ===================================================== */
+
+.toggle-btn{
+
+background:var(--accent);
+
+border:none;
+
+width:100%;
+
+padding:10px;
+
+margin-bottom:20px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-weight:bold;
+}
+
+/* ===================================================== */
+/* CONTENIDO                                             */
+/* ===================================================== */
+
+.content{
+
+margin-left:260px;
+
+flex:1;
+
+padding:30px;
+
+transition:var(--transition);
+}
+
+.content.expanded{
+
+margin-left:80px;
+}
+
+.page{
+
+display:none;
+
+animation:fade .3s ease;
+}
+
+.page.active{
+display:block;
+}
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(8px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* ===================================================== */
+/* TITULOS                                               */
+/* ===================================================== */
+
+.title{
+
+font-size:32px;
+
+font-weight:700;
+
+margin-bottom:10px;
+}
+
+.subtitle{
+
+color:var(--text-light);
+
+margin-bottom:30px;
+}
+
+/* ===================================================== */
+/* DASHBOARD                                             */
+/* ===================================================== */
+
+.dashboard{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(230px,1fr));
+
+gap:20px;
+}
+
+.card{
+
+background:var(--bg-secondary);
+
+border:
+1px solid var(--border);
+
+border-radius:18px;
+
+padding:20px;
+
+box-shadow:var(--shadow);
+
+transition:.25s;
+}
+
+.card:hover{
+
+transform:
+translateY(-3px);
+}
+
+.card-line{
+
+height:5px;
+
+border-radius:20px;
+
+margin-bottom:15px;
+}
+
+.blue{
+background:var(--navy);
+}
+
+.green{
+background:var(--emerald);
+}
+
+.gold{
+background:var(--accent);
+}
+
+.card h3{
+
+font-size:15px;
+
+margin-bottom:8px;
+}
+
+.card-value{
+
+font-size:32px;
+
+font-weight:700;
+}
+
+/* ===================================================== */
+/* CONFIGURACION                                         */
+/* ===================================================== */
+
+.config-btn{
+
+    background:var(--accent);
+
+    color:white;
+
+    border:none;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    margin-top:15px;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+thead{
+
+background:var(--navy);
+
+color:white;
+
+}
+
+th{
+
+padding:14px;
+
+text-align:left;
+
+font-size:14px;
+
+}
+
+td{
+
+padding:14px;
+
+border-bottom:
+1px solid var(--border);
+
+}
+
+tbody tr:hover{
+
+background:
+rgba(15,118,110,.05);
+
+}
+
+.form-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:20px;
+
+}
+
+.form-group{
+
+display:flex;
+
+flex-direction:column;
+
+gap:8px;
+
+}
+
+.form-group label{
+
+font-weight:600;
+
+}
+
+.form-group input,
+.form-group select{
+
+padding:12px;
+
+border:
+1px solid var(--border);
+
+border-radius:12px;
+
+background:var(--bg);
+
+color:var(--text);
+
+}
+
+.form-group input:focus,
+.form-group select:focus{
+
+outline:none;
+
+border-color:var(--accent);
+
+}
+
+.edit-btn,
+.delete-btn{
+
+    border:none;
+
+    background:none;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.edit-btn{
+
+    color:#2563EB;
+
+}
+
+.edit-btn:hover{
+
+    transform:scale(1.15);
+
+    color:#1D4ED8;
+
+}
+
+.delete-btn{
+
+    color:#DC2626;
+
+}
+
+.delete-btn:hover{
+
+    transform:scale(1.15);
+
+    color:#B91C1C;
+
+}
+
+.menu button{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.icon{
+
+    min-width:24px;
+
+    text-align:center;
+
+    font-size:18px;
+
+}
+
+.sidebar.collapsed .text{
+
+    display:none;
+
+}
+
+.sidebar.collapsed .menu button{
+
+    justify-content:center;
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- ===================================================== -->
+<!-- SIDEBAR                                               -->
+<!-- ===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+<button class="toggle-btn"
+onclick="toggleSidebar()">
+☰
+</button>
+
+<div class="logo">
+
+<div class="logo-box">
+C$
+</div>
+
+<div class="logo-text">
+
+<h3>NominaNIC Pro</h3>
+
+<small>
+Sistema Profesional de Nómina
+</small>
+
+</div>
+
+</div>
+
+<div class="menu">
+
+<button class="active"
+onclick="showPage('inicio',this)">
+
+    <span class="icon">🏠</span>
+
+    <span class="text">Inicio</span>
+
+</button>
+
+<button
+onclick="showPage('registro',this)">
+
+    <span class="icon">📝</span>
+
+    <span class="text">Registro</span>
+
+</button>
+
+<button
+onclick="showPage('trabajadores',this)">
+
+    <span class="icon">👥</span>
+
+    <span class="text">Trabajadores</span>
+
+</button>
+
+<button
+onclick="showPage('nomina',this)">
+
+    <span class="icon">📋</span>
+
+    <span class="text">Nómina</span>
+
+</button>
+
+<button
+onclick="showPage('manual',this)">
+
+    <span class="icon">📖</span>
+
+    <span class="text">Manual</span>
+
+</button>
+
+<button
+onclick="showPage('configuracion',this)">
+
+    <span class="icon">⚙️</span>
+
+    <span class="text">Configuración</span>
+
+</button>
+
+</div>
+
+</aside>
+
+<!-- ===================================================== -->
+<!-- CONTENIDO                                             -->
+<!-- ===================================================== -->
+
+<main class="content" id="content">
+
+<!-- ===================================================== -->
+<!-- INICIO                                                -->
+<!-- ===================================================== -->
+
+<section
+id="inicio"
+class="page active">
+
+<h1 class="title">
+Bienvenido a NominaNIC Pro
+</h1>
+
+<p class="subtitle">
+Sistema profesional de gestión de nómina para Nicaragua.
+</p>
+
+<div class="dashboard">
+
+<div class="card">
+
+    <div class="card-line blue"></div>
+
+    <h3>Total Empleados</h3>
+
+    <div class="card-value" id="totalEmpleados">
+        0
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-line green"></div>
+
+    <h3>Salario Bruto Total</h3>
+
+    <div class="card-value" id="salarioBruto">
+        C$0
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-line gold"></div>
+
+    <h3>Total INSS</h3>
+
+    <div class="card-value" id="totalINSS">
+        C$0
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-line blue"></div>
+
+    <h3>Total IR</h3>
+
+    <div class="card-value" id="totalIR">
+        C$0
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-line green"></div>
+
+    <h3>Salario Neto</h3>
+
+    <div class="card-value" id="salarioNeto">
+        C$0
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- REGISTRO                                          -->
+<!-- ===================================================== -->
+
+<section
+id="registro"
+class="page">
+
+<h1 class="title">
+Registro de Empleados
+</h1>
+
+<p class="subtitle">
+Agrega trabajadores para generar la nómina automáticamente.
+</p>
+
+<div class="card">
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Código</label>
+<input type="text" id="codigo" readonly>
+</div>
+
+<div class="form-group">
+<label>Nombre Completo</label>
+<input type="text" id="nombre">
+</div>
+
+<div class="form-group">
+<label>Cargo</label>
+<input type="text" id="cargo">
+</div>
+
+<div class="form-group">
+<label>Departamento</label>
+<select id="departamento">
+<option>Administración</option>
+<option>Contabilidad</option>
+<option>Recursos Humanos</option>
+<option>Ventas</option>
+<option>Producción</option>
+<option>Otro</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Fecha de Ingreso</label>
+<input type="date" id="fechaIngreso">
+</div>
+
+<div
+    class="form-group"
+    id="grupoPorcentajeAntiguedad"
+    style="display:none;">
+
+    <label>Porcentaje de Antigüedad (%)</label>
+
+    <input
+        type="number"
+        id="porcentajeAntiguedad"
+        min="0"
+        max="100"
+        step="0.01">
+
+</div>
+
+<div class="form-group">
+<label>Salario Base</label>
+<input type="number" id="salario">
+</div>
+
+<div class="form-group">
+<label>Horas Extras</label>
+<input type="number" id="horasExtras" value="0">
+</div>
+
+<div class="form-group">
+<label>Bonificaciones</label>
+<input type="number" id="bonificaciones" value="0">
+</div>
+
+<div class="form-group">
+<label>Otros Ingresos</label>
+<input type="number" id="otrosIngresos" value="0">
+</div>
+
+<div class="form-group">
+<label>Otras Deducciones</label>
+<input type="number" id="otrasDeducciones" value="0">
+</div>
+
+<div class="form-group">
+    <label>Días de Vacaciones</label>
+    <input
+        type="number"
+        id="diasVacaciones"
+        value="30"
+        min="0"
+        max="30">
+</div>
+
+</div>
+
+<button
+class="config-btn"
+id="btnGuardar">
+
+➕ Agregar Trabajador
+
+</button>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- TRABAJADORES                                          -->
+<!-- ===================================================== -->
+
+<section
+id="trabajadores"
+class="page">
+
+<h1 class="title">
+Trabajadores Registrados
+</h1>
+
+<p class="subtitle">
+Administra los empleados registrados en el sistema.
+</p>
+
+<div class="card">
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+">
+
+<h2>
+Lista de Empleados
+</h2>
+
+<span id="contadorEmpleados">
+0 empleados
+</span>
+
+</div>
+
+<div class="table-container">
+
+<table id="tablaTrabajadores">
+
+<thead>
+
+<tr>
+
+<th>Código</th>
+
+<th>Nombre</th>
+
+<th>Cargo</th>
+
+<th>Departamento</th>
+
+<th>Salario Base</th>
+
+<th>Horas Extras</th>
+
+<th>Bonificaciones</th>
+
+<th style="width:60px;"></th>
+<th style="width:60px;"></th>
+
+</tr>
+
+</thead>
+
+<tbody id="tablaBody">
+
+<tr>
+
+<td colspan="9"
+style="text-align:center;padding:25px;">
+
+No hay empleados registrados.
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- NOMINA                                                -->
+<!-- ===================================================== -->
+
+<section
+id="nomina"
+class="page">
+
+    <h1 class="title">
+        Nómina General
+    </h1>
+
+    <p class="subtitle">
+        Nómina generada automáticamente.
+    </p>
+
+    <div class="card">
+
+        <table id="tablaNomina">
+
+            <thead>
+
+                <tr>
+
+                    <th>N°</th>
+                    <th>Empleado</th>
+                    <th>Cargo</th>
+                    <th>Salario Básico</th>
+                    <th>H.E</th>
+                    <th>Antigüedad</th>
+                    <th>Bonificaciones</th>
+                    <th>Otros Ingresos</th>
+                    <th>Vacaciones</th>
+                    <th>Rem. Bruta</th>
+                    <th>INSS</th>
+                    <th>IR</th>
+                    <th>Otras Ded.</th>
+                    <th>Total Ded.</th>
+                    <th>Aguinaldo</th>
+                    <th>Neto a Recibir</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="nominaBody">
+
+                <tr>
+
+                    <td colspan="16"
+                    style="text-align:center;padding:25px;">
+
+                        No hay nómina generada.
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- MANUAL                                                -->
+<!-- ===================================================== -->
+
+<section id="manual" class="page">
+
+<h1 class="title">
+Manual
+</h1>
+
+<p class="subtitle">
+
+Esta sección contendrá:
+
+<br><br>
+
+• Antigüedad<br>
+• Horas Extras<br>
+• INSS<br>
+• IR<br>
+• Exportar Excel<br>
+• Imprimir
+
+</p>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- CONFIGURACION                                         -->
+<!-- ===================================================== -->
+
+<section
+id="configuracion"
+class="page">
+
+<h1 class="title">
+Configuración
+</h1>
+
+<p class="subtitle">
+
+Personaliza tu experiencia.
+
+</p>
+
+<div class="card">
+
+    <h3 style="margin-bottom:15px;">
+        🎨 Tema Visual
+    </h3>
+
+    <select
+        id="selectorTema"
+        style="
+            padding:12px;
+            border-radius:12px;
+            width:100%;
+            margin-bottom:15px;
+        ">
+
+        <option value="corporativo">🌊 Corporativo</option>
+        <option value="nocturno">🌙 Nocturno</option>
+        <option value="esmeralda">🌿 Esmeralda</option>
+        <option value="burdeos">🍷 Burdeos Ejecutivo</option>
+        <option value="arena">🌅 Arena Moderna</option>
+
+    </select>
+
+   <button
+class="config-btn"
+onclick="
+guardarConfiguracion();
+cambiarTema();
+">
+
+Guardar Configuración
+
+</button>
+
+    <hr style="margin:25px 0;">
+
+    <div class="form-group">
+
+        <label>Tipo de Nómina</label>
+
+        <select id="tipoNomina">
+
+            <option value="mensual">
+                Mensual
+            </option>
+
+            <option value="quincenal">
+                Quincenal
+            </option>
+
+        </select>
+
+    </div>
+
+<div class="form-group">
+
+<label>Método de Antigüedad</label>
+
+<select id="metodoAntiguedad">
+
+    <option value="fecha">
+        Calcular por fecha de ingreso
+    </option>
+
+    <option value="manual">
+        Ingresar porcentaje manualmente
+    </option>
+
+</select>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<script>
+
+/* ===================================================== */
+/* SIDEBAR                                               */
+/* ===================================================== */
+
+function toggleSidebar(){
+
+    const sidebar =
+    document
+    .getElementById(
+    "sidebar"
+    );
+
+    const content =
+    document
+    .getElementById(
+    "content"
+    );
+
+    sidebar
+    .classList
+    .toggle(
+    "collapsed"
+    );
+
+    content
+    .classList
+    .toggle(
+    "expanded"
+    );
+
+    localStorage.setItem(
+        "sidebarColapsado",
+        sidebar
+        .classList
+        .contains(
+        "collapsed"
+        )
+    );
+
+}
+
+/* ===================================================== */
+/* PAGINAS                                               */
+/* ===================================================== */
+
+function showPage(id,btn){
+
+    document
+    .querySelectorAll(".page")
+    .forEach(page=>{
+
+        page.classList.remove("active");
+
+    });
+
+    document
+    .getElementById(id)
+    .classList.add("active");
+
+    document
+    .querySelectorAll(".menu button")
+    .forEach(button=>{
+
+        button.classList.remove("active");
+
+    });
+
+    if(btn){
+    btn.classList.add("active");
+}
+
+localStorage.setItem(
+    "paginaActual",
+    id
+);
+
+}
+
+/* ===================================================== */
+/* DATOS EMPLEADOS                                       */
+/* ===================================================== */
+
+let empleados =
+JSON.parse(
+localStorage.getItem("empleados") || "[]"
+);
+
+let ultimoCodigo =
+empleados.length
+? parseInt(
+empleados[empleados.length-1]
+.codigo.replace("EMP-","")
+)+1
+:1;
+
+let indiceEditando = -1;
+
+let indiceEliminar = -1;
+
+let configuracion = JSON.parse(localStorage.getItem("configuracion")) || {
+    tema: "corporativo",
+    tipoNomina: "mensual",
+    metodoAntiguedad: "fecha"
+};
+
+/* ===================================================== */
+/* ACTUALIZAR TABLA                                      */
+/* ===================================================== */
+
+function actualizarTabla() {
+
+    const body = document.getElementById("tablaBody");
+    const contador = document.getElementById("contadorEmpleados");
+
+    if (!body) return;
+
+    if (empleados.length === 0) {
+
+        body.innerHTML = `
+        <tr>
+            <td colspan="9" style="text-align:center;padding:25px;">
+                No hay empleados registrados.
+            </td>
+        </tr>`;
+
+        contador.textContent = "0 empleados";
+        return;
+    }
+
+    body.innerHTML = "";
+
+    empleados.forEach((emp, i) => {
+
+        body.innerHTML += `
+        <tr>
+            <td>${emp.codigo}</td>
+            <td>${emp.nombre}</td>
+            <td>${emp.cargo}</td>
+            <td>${emp.departamento}</td>
+            <td>${moneda(emp.salario)}</td>
+            <td>${emp.horasExtras}</td>
+            <td>${moneda(emp.bonificaciones)}</td>
+
+            <td style="text-align:center;">
+                <button class="edit-btn" onclick="editarEmpleado(${i})">
+                    ✏
+                </button>
+            </td>
+
+            <td style="text-align:center;">
+                <button class="delete-btn" onclick="eliminarEmpleado(${i})">
+                    🗑
+                </button>
+            </td>
+        </tr>`;
+    });
+
+    contador.textContent = `${empleados.length} empleados`;
+}
+
+function actualizarDashboard(){
+
+    let salarioBruto = 0;
+    let totalINSS = 0;
+    let totalIR = 0;
+    let salarioNeto = 0;
+
+    empleados.forEach(emp => {
+
+        const salario = Number(emp.salario) || 0;
+
+        const horasExtras = calcularHorasExtras(
+            salario,
+            Number(emp.horasExtras) || 0
+        );
+
+        const antiguedad = calcularAntiguedad(
+            salario,
+            emp.fechaIngreso,
+            emp.porcentajeAntiguedad
+        );
+
+        const bonificaciones = Number(emp.bonificaciones) || 0;
+
+        const otrosIngresos = Number(emp.otrosIngresos) || 0;
+
+        const diasVacaciones = Number(emp.diasVacaciones) || 0;
+
+        const vacaciones = calcularVacaciones(
+            salario,
+            diasVacaciones
+        );
+
+        const bruto =
+            salario +
+            horasExtras +
+            antiguedad +
+            bonificaciones +
+            otrosIngresos +
+            vacaciones;
+
+        const inss = calcularINSS(bruto);
+
+        const ir = calcularIR(bruto);
+
+        const otrasDeducciones =
+            Number(emp.otrasDeducciones) || 0;
+
+        const aguinaldo = calcularAguinaldo(bruto);
+
+        const neto =
+            bruto -
+            inss -
+            ir -
+            otrasDeducciones +
+            aguinaldo;
+
+        salarioBruto += bruto;
+        totalINSS += inss;
+        totalIR += ir;
+        salarioNeto += neto;
+
+    });
+
+    document.getElementById("totalEmpleados").textContent =
+        empleados.length;
+
+    document.getElementById("salarioBruto").textContent =
+        moneda(salarioBruto);
+
+    document.getElementById("totalINSS").textContent =
+        moneda(totalINSS);
+
+    document.getElementById("totalIR").textContent =
+        moneda(totalIR);
+
+    document.getElementById("salarioNeto").textContent =
+        moneda(salarioNeto);
+
+}
+
+/* ===================================================== */
+/* AGREGAR EMPLEADO                                      */
+/* ===================================================== */
+
+function validarFormulario(){
+
+    const nombre =
+    document.getElementById("nombre").value.trim();
+
+    const cargo =
+    document.getElementById("cargo").value.trim();
+
+    const fechaIngreso =
+    document.getElementById("fechaIngreso").value;
+
+    const salario =
+    Number(document.getElementById("salario").value);
+
+    const horasExtras =
+    Number(document.getElementById("horasExtras").value);
+
+    const bonificaciones =
+    Number(document.getElementById("bonificaciones").value);
+
+    const otrosIngresos =
+    Number(document.getElementById("otrosIngresos").value);
+
+    const otrasDeducciones =
+    Number(document.getElementById("otrasDeducciones").value);
+
+    const diasVacaciones =
+    Number(document.getElementById("diasVacaciones").value);
+
+    const hoy = new Date();
+
+    /* Nombre */
+
+    if(nombre === ""){
+
+        mostrarAlerta("Debe ingresar el nombre del trabajador.");
+        return false;
+
+    }
+
+    if(!/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/.test(nombre)){
+
+        mostrarAlerta("El nombre solo puede contener letras.");
+        return false;
+
+    }
+
+    /* Cargo */
+
+    if(cargo === ""){
+
+        mostrarAlerta("Debe ingresar el cargo.");
+        return false;
+
+    }
+
+    if(!/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/.test(cargo)){
+
+        mostrarAlerta("El cargo solo puede contener letras.");
+        return false;
+
+    }
+
+    /* Fecha */
+
+    if(fechaIngreso === ""){
+
+        mostrarAlerta("Debe seleccionar la fecha de ingreso.");
+        return false;
+
+    }
+
+    if(new Date(fechaIngreso) > hoy){
+
+        mostrarAlerta("La fecha de ingreso no puede ser futura.");
+        return false;
+
+    }
+
+    /* Salario */
+
+    if(isNaN(salario) || salario <= 0){
+
+        mostrarAlerta("El salario base debe ser mayor que cero.");
+        return false;
+
+    }
+
+    /* Horas extras */
+
+    if(horasExtras < 0){
+
+        mostrarAlerta("Las horas extras no pueden ser negativas.");
+        return false;
+
+    }
+
+    if(horasExtras > 120){
+
+        mostrarAlerta("Las horas extras no pueden ser mayores a 120.");
+        return false;
+
+    }
+
+    /* Bonificaciones */
+
+    if(bonificaciones < 0){
+
+        mostrarAlerta("Las bonificaciones no pueden ser negativas.");
+        return false;
+
+    }
+
+    /* Otros ingresos */
+
+    if(otrosIngresos < 0){
+
+        mostrarAlerta("Los otros ingresos no pueden ser negativos.");
+        return false;
+
+    }
+
+    /* Otras deducciones */
+
+    if(otrasDeducciones < 0){
+
+        mostrarAlerta("Las otras deducciones no pueden ser negativas.");
+        return false;
+
+    }
+
+    /* Vacaciones */
+
+    if(diasVacaciones < 0 || diasVacaciones > 30){
+
+        mostrarAlerta("Los días de vacaciones deben estar entre 0 y 30.");
+        return false;
+
+    }
+
+    /* Empleado duplicado */
+
+    const existe = empleados.some((emp,index)=>{
+
+        if(index === indiceEditando)
+            return false;
+
+        return emp.nombre.toLowerCase() === nombre.toLowerCase() &&
+               emp.cargo.toLowerCase() === cargo.toLowerCase();
+
+    });
+
+    if(existe){
+
+        mostrarAlerta("Ya existe un trabajador registrado con ese nombre y cargo.");
+        return false;
+
+    }
+
+    return true;
+
+}
+
+function agregarEmpleado() {
+
+    if (!validarFormulario()) {
+        return;
+    }
+
+    const empleado = {
+        codigo: document.getElementById("codigo").value,
+        nombre: document.getElementById("nombre").value.trim(),
+        cargo: document.getElementById("cargo").value.trim(),
+        departamento: document.getElementById("departamento").value,
+        fechaIngreso: document.getElementById("fechaIngreso").value,
+        salario: Number(document.getElementById("salario").value) || 0,
+        horasExtras: Number(document.getElementById("horasExtras").value) || 0,
+        bonificaciones: Number(document.getElementById("bonificaciones").value) || 0,
+        otrosIngresos: Number(document.getElementById("otrosIngresos").value) || 0,
+        otrasDeducciones: Number(document.getElementById("otrasDeducciones").value) || 0,
+        diasVacaciones: Number(document.getElementById("diasVacaciones").value) || 30,
+        porcentajeAntiguedad:
+            Number(document.getElementById("porcentajeAntiguedad").value) || 0
+    };
+
+    if (indiceEditando >= 0) {
+
+        // Mantener el mismo código
+        empleado.codigo = empleados[indiceEditando].codigo;
+
+        // Reemplazar empleado
+        empleados[indiceEditando] = empleado;
+
+        indiceEditando = -1;
+
+        document.getElementById("btnGuardar").innerText =
+        "➕ Agregar Trabajador";
+
+        guardarDatos();
+        actualizarTabla();
+        actualizarDashboard();
+        actualizarNomina();
+
+        limpiarFormulario();
+
+        showPage("trabajadores");
+
+        return;
+    }
+
+    // Nuevo empleado
+    empleados.push(empleado);
+
+    ultimoCodigo++;
+
+    guardarDatos();
+
+    actualizarTabla();
+    actualizarDashboard();
+    actualizarNomina();
+
+    limpiarFormulario();
+
+    generarCodigo();
+}
+
+
+/* ===================================================== */
+/* LIMPIAR FORMULARIO                                    */
+/* ===================================================== */
+
+function limpiarFormulario(){
+
+document
+.getElementById("nombre")
+.value = "";
+
+document
+.getElementById("cargo")
+.value = "";
+
+document
+.getElementById("fechaIngreso")
+.value = "";
+
+document
+.getElementById("salario")
+.value = "";
+
+document
+.getElementById("horasExtras")
+.value = 0;
+
+document
+.getElementById("bonificaciones")
+.value = 0;
+
+document
+.getElementById("otrosIngresos")
+.value = 0;
+
+document
+.getElementById("otrasDeducciones")
+.value = 0;
+
+document.getElementById("diasVacaciones").value = 30;
+
+document.getElementById("porcentajeAntiguedad").value = "";
+
+}
+
+generarCodigo();
+
+/* ===================================================== */
+/* CODIGO AUTOMATICO                                     */
+/* ===================================================== */
+
+function generarCodigo(){
+
+const codigo =
+"EMP-" +
+String(ultimoCodigo)
+.padStart(4,"0");
+
+document
+.getElementById("codigo")
+.value = codigo;
+
+}
+
+generarCodigo();
+
+const tipoGuardado =
+localStorage.getItem("tipoNominaSistema") || "mensual";
+
+document.getElementById("tipoNomina").value =
+tipoGuardado;
+
+actualizarTabla();
+actualizarDashboard();
+actualizarNomina();
+
+const paginaGuardada =
+localStorage.getItem("paginaActual");
+
+if(paginaGuardada){
+
+    const botones =
+    document.querySelectorAll(
+        ".menu button"
+    );
+
+    botones.forEach(btn => {
+
+        const onclick =
+        btn.getAttribute(
+            "onclick"
+        );
+
+        if(
+            onclick &&
+            onclick.includes(
+                "'" +
+                paginaGuardada +
+                "'"
+            )
+        ){
+
+            showPage(
+                paginaGuardada,
+                btn
+            );
+
+        }
+
+    });
+
+}
+
+const temaGuardado =
+localStorage.getItem(
+"tema"
+);
+
+if(temaGuardado){
+
+    document
+    .getElementById(
+    "selectorTema"
+    ).value =
+    temaGuardado;
+
+    aplicarTema(
+    temaGuardado
+    );
+
+}
+
+const sidebarGuardado =
+localStorage.getItem(
+"sidebarColapsado"
+);
+
+if(
+sidebarGuardado ===
+"true"
+){
+
+    document
+    .getElementById(
+    "sidebar"
+    )
+    .classList
+    .add(
+    "collapsed"
+    );
+
+    document
+    .getElementById(
+    "content"
+    )
+    .classList
+    .add(
+    "expanded"
+    );
+
+}
+
+/* ===================================================== */
+/* TEMAS VISUALES                                        */
+/* ===================================================== */
+
+function aplicarTema(nombre){
+
+    const root =
+    document.documentElement;
+
+    switch(nombre){
+
+        case "corporativo":
+
+            root.style.setProperty("--bg","#ffffff");
+
+            root.style.setProperty("--bg-secondary","#f8fafc");
+
+            root.style.setProperty("--sidebar","#1e293b");
+
+            root.style.setProperty("--text","#1e293b");
+
+            root.style.setProperty("--text-light","#64748b");
+
+            root.style.setProperty("--border","#e2e8f0");
+
+            root.style.setProperty("--navy","#16324f");
+
+            root.style.setProperty("--emerald","#0f766e");
+
+            root.style.setProperty("--gold","#c9a227");
+
+            root.style.setProperty("--accent","#c9a227");
+
+        break;
+
+        case "nocturno":
+
+            root.style.setProperty("--sidebar","#111827");
+            root.style.setProperty("--bg","#191919");
+            root.style.setProperty("--bg-secondary","#242424");
+            root.style.setProperty("--text","#EDEDED");
+            root.style.setProperty("--border","#323232");
+            root.style.setProperty("--accent","#3B82F6");
+
+        break;
+
+        case "esmeralda":
+
+            root.style.setProperty("--sidebar","#064E3B");
+            root.style.setProperty("--bg","#F7F3E9");
+            root.style.setProperty("--bg-secondary","#FFFDF8");
+            root.style.setProperty("--text","#1F2937");
+            root.style.setProperty("--border","#D6D3D1");
+            root.style.setProperty("--accent","#10B981");
+
+        break;
+
+        case "burdeos":
+
+            root.style.setProperty(
+            "--sidebar",
+            "#6B1F33"
+            );
+
+            root.style.setProperty(
+            "--bg",
+            "#F3E9DC"
+            );
+
+            root.style.setProperty(
+            "--bg-secondary",
+            "#FFFDF8"
+            );
+
+            root.style.setProperty(
+            "--text",
+            "#2D2D2D"
+            );
+
+            root.style.setProperty(
+            "--border",
+            "#D8CFC6"
+            );
+
+            /* Verde oliva */
+            root.style.setProperty(
+            "--accent",
+            "#C37A5A"
+            );
+
+        break;
+
+        case "arena":
+
+            root.style.setProperty("--sidebar","#8B7D6B");
+            root.style.setProperty("--bg","#F7F1E8");
+            root.style.setProperty("--bg-secondary","#FFF8F0");
+            root.style.setProperty("--text","#3D3D3D");
+            root.style.setProperty("--border","#D6CFC7");
+            root.style.setProperty("--accent","#4F6D7A");
+
+        break;
+
+    }
+
+}
+
+function cambiarTema(){
+
+    const tema =
+    document
+    .getElementById(
+    "selectorTema"
+    ).value;
+
+    aplicarTema(tema);
+
+    localStorage.setItem(
+        "tema",
+        tema
+    );
+
+}
+
+/* ===================================================== */
+/* EDITAR EMPLEADO                                       */
+/* ===================================================== */
+
+function editarEmpleado(indice){
+
+    indiceEditando = indice;
+
+    const emp = empleados[indice];
+
+    document.getElementById("codigo").value =
+    emp.codigo;
+
+    document.getElementById("nombre").value =
+    emp.nombre;
+
+    document.getElementById("cargo").value =
+    emp.cargo;
+
+    document.getElementById("departamento").value =
+    emp.departamento;
+
+    document.getElementById("fechaIngreso").value =
+    emp.fechaIngreso;
+
+    document.getElementById("salario").value =
+    emp.salario;
+
+    document.getElementById("horasExtras").value =
+    emp.horasExtras;
+
+    document.getElementById("bonificaciones").value =
+    emp.bonificaciones;
+
+    document.getElementById("otrosIngresos").value =
+    emp.otrosIngresos;
+
+    document.getElementById("otrasDeducciones").value =
+    emp.otrasDeducciones;
+
+    document.getElementById("diasVacaciones").value =
+    emp.diasVacaciones !== undefined
+        ? emp.diasVacaciones
+        : 2.5;
+
+    document.getElementById("porcentajeAntiguedad").value =
+    emp.porcentajeAntiguedad || 0;
+
+    document
+    .getElementById("btnGuardar")
+    .innerText =
+    "💾 Guardar Cambios";
+
+    /* Abrir Registro */
+    showPage("registro");
+
+}
+
+function eliminarEmpleado(i){
+
+    indiceEliminar = i;
+
+    document
+    .getElementById("modalEliminar")
+    .style.display =
+    "flex";
+
+}
+
+function cerrarModal(){
+
+    document
+    .getElementById("modalEliminar")
+    .style.display =
+    "none";
+
+}
+
+function confirmarEliminar(){
+
+    empleados.splice(
+    indiceEliminar,
+    1
+    );
+
+    empleados.forEach((emp, indice)=>{
+
+        emp.codigo =
+        "EMP-" +
+        String(indice + 1)
+        .padStart(4,"0");
+
+    });
+
+    ultimoCodigo =
+    empleados.length + 1;
+
+    generarCodigo();
+
+    indiceEditando = -1;
+
+    guardarDatos();
+
+    actualizarTabla();
+
+    actualizarDashboard();
+
+    actualizarNomina();
+
+    cerrarModal();
+
+}
+
+document
+.getElementById("btnGuardar")
+.addEventListener(
+"click",
+agregarEmpleado
+);
+
+function guardarDatos(){
+    localStorage.setItem(
+        "empleados",
+        JSON.stringify(empleados)
+    );
+}
+
+/* ===================================================== */
+/* MOTOR DE CÁLCULOS - VERSIÓN ESTABLE                  */
+/* ===================================================== */
+
+function redondear(valor) {
+    return Math.round(valor * 100) / 100;
+}
+
+function calcularINSS(bruto) {
+    return redondear(bruto * 0.07);
+}
+
+function calcularIR(bruto) {
+    const tipoNomina = localStorage.getItem("tipoNominaSistema") || "mensual";
+    const inssPeriodo = calcularINSS(bruto);
+    const baseGravablePeriodo = bruto - inssPeriodo;
+    const factorAnual = tipoNomina === "quincenal" ? 24 : 12;
+    const rentaAnual = baseGravablePeriodo * factorAnual;
+
+    let impuestoBase = 0;
+    let exceso = 0;
+    let porcentaje = 0;
+
+    if (rentaAnual <= 100000) {
+        return 0;
+    } else if (rentaAnual <= 200000) {
+        impuestoBase = 0;
+        exceso = rentaAnual - 100000;
+        porcentaje = 0.15;
+    } else if (rentaAnual <= 350000) {
+        impuestoBase = 15000;
+        exceso = rentaAnual - 200000;
+        porcentaje = 0.20;
+    } else if (rentaAnual <= 500000) {
+        impuestoBase = 45000;
+        exceso = rentaAnual - 350000;
+        porcentaje = 0.25;
+    } else {
+        impuestoBase = 82500;
+        exceso = rentaAnual - 500000;
+        porcentaje = 0.30;
+    }
+
+    const irAnual = impuestoBase + (exceso * porcentaje);
+    return redondear(irAnual / factorAnual);
+}
+
+function calcularHorasExtras(salario, horas) {
+    if (!horas || horas <= 0) return 0;
+    const valorHora = salario / 30 / 8;
+    return redondear(horas * valorHora * 2);
+}
+
+function calcularAntiguedad(salario, fechaIngreso, porcentajeManual = null) {
+
+    // Si se usa porcentaje manual
+    if (configuracion.metodoAntiguedad === "manual") {
+
+        return redondear(
+            salario * ((Number(porcentajeManual) || 0) / 100)
+        );
+
+    }
+
+    // Cálculo automático por fecha
+    if (!fechaIngreso) return 0;
+
+    const hoy = new Date();
+    const ingreso = new Date(fechaIngreso);
+
+    let años = hoy.getFullYear() - ingreso.getFullYear();
+
+    if (
+        hoy.getMonth() < ingreso.getMonth() ||
+        (
+            hoy.getMonth() === ingreso.getMonth() &&
+            hoy.getDate() < ingreso.getDate()
+        )
+    ) {
+        años--;
+    }
+
+    const tabla = {
+        0:0,
+        1:0.03,
+        2:0.05,
+        3:0.07,
+        4:0.09,
+        5:0.10,
+        6:0.11,
+        7:0.12,
+        8:0.13,
+        9:0.14,
+        10:0.15,
+        11:0.155,
+        12:0.16,
+        13:0.165,
+        14:0.17,
+        15:0.175,
+        16:0.18,
+        17:0.185,
+        18:0.19,
+        19:0.195
+    };
+
+    const porcentaje =
+        tabla[años] !== undefined
+            ? tabla[años]
+            : 0.20;
+
+    return redondear(
+        salario * porcentaje
+    );
+
+}
+
+function calcularAguinaldo(bruto){
+
+    return redondear(
+        bruto / 12
+    );
+
+}
+
+function calcularVacaciones(salario, dias) {
+
+    dias = Number(dias);
+
+    if (dias <= 0) {
+        return 0;
+    }
+
+    return redondear((salario / 30) * dias);
+
+}
+
+/* ===================================================== */
+/* ACTUALIZAR NÓMINA         */
+/* ===================================================== */
+
+function actualizarNomina() {
+
+    const body = document.getElementById("nominaBody");
+    if (!body) return;
+
+    if (empleados.length === 0) {
+        body.innerHTML = `
+        <tr>
+            <td colspan="16" style="text-align:center;padding:25px;">
+                No hay nómina generada.
+            </td>
+        </tr>`;
+        return;
+    }
+
+    body.innerHTML = "";
+
+    const empleadosOrdenados = [...empleados].sort((a,b)=>{
+        const depA = a.departamento.trim().toUpperCase();
+        const depB = b.departamento.trim().toUpperCase();
+
+        if(depA===depB){
+            return a.nombre.localeCompare(b.nombre);
+        }
+
+        return depA.localeCompare(depB);
+    });
+
+    let departamentoActual="";
+    let numero=1;
+
+    let Salario=0,HE=0,Ant=0,Bon=0,Otros=0,Vac=0;
+    let Bruto=0,INSS=0,IR=0,OtrasDed=0,TotalDed=0,Aguinaldo=0,Neto=0;
+
+    let gSalario=0,gHE=0,gAnt=0,gBon=0,gOtros=0,gVac=0;
+    let gBruto=0,gINSS=0,gIR=0,gOtrasDed=0,gTotalDed=0,gAguinaldo=0,gNeto=0;
+
+    empleadosOrdenados.forEach((emp,i)=>{
+
+        if(i===0 || empleadosOrdenados[i-1].departamento.trim().toUpperCase()!=emp.departamento.trim().toUpperCase()){
+
+            if(departamentoActual!=""){
+
+                body.innerHTML+=`
+                <tr style="background:#eef5ff;font-weight:bold;">
+                    <td colspan="3">TOTAL ${departamentoActual}</td>
+
+                    <td>${moneda(Salario)}</td>
+                    <td>${moneda(HE)}</td>
+                    <td>${moneda(Ant)}</td>
+                    <td>${moneda(Bon)}</td>
+                    <td>${moneda(Otros)}</td>
+                    <td>${moneda(Vac)}</td>
+                    <td>${moneda(Bruto)}</td>
+                    <td>${moneda(INSS)}</td>
+                    <td>${moneda(IR)}</td>
+                    <td>${moneda(OtrasDed)}</td>
+                    <td>${moneda(TotalDed)}</td>
+                    <td>${moneda(Aguinaldo)}</td>
+                    <td>${moneda(Neto)}</td>
+
+                </tr>`;
+            }
+
+            body.innerHTML+=`
+            <tr style="background:#dbeafe;font-weight:bold;">
+                <td colspan="16">
+                    Departamento: ${emp.departamento}
+                </td>
+            </tr>`;
+
+            departamentoActual=emp.departamento;
+
+            Salario=0;
+            HE=0;
+            Ant=0;
+            Bon=0;
+            Otros=0;
+            Vac=0;
+            Bruto=0;
+            INSS=0;
+            IR=0;
+            OtrasDed=0;
+            TotalDed=0;
+            Aguinaldo=0;
+            Neto=0;
+        }
+
+        const salario=Number(emp.salario)||0;
+
+        const horasExtras=calcularHorasExtras(
+            salario,
+            Number(emp.horasExtras)||0
+        );
+
+        const antiguedad=calcularAntiguedad(
+            salario,
+            emp.fechaIngreso,
+            emp.porcentajeAntiguedad
+        );
+
+        const bonificaciones=Number(emp.bonificaciones)||0;
+
+        const otrosIngresos=Number(emp.otrosIngresos)||0;
+
+        const diasVacaciones=Number(emp.diasVacaciones)||0;
+
+        const vacaciones=calcularVacaciones(
+            salario,
+            diasVacaciones
+        );
+
+        const bruto=
+            salario+
+            horasExtras+
+            antiguedad+
+            bonificaciones+
+            otrosIngresos+
+            vacaciones;
+
+        const inss=calcularINSS(bruto);
+
+        const ir=calcularIR(bruto);
+
+        const otrasDeducciones=
+            Number(emp.otrasDeducciones)||0;
+
+        const totalDeducciones=
+            inss+
+            ir+
+            otrasDeducciones;
+
+        const aguinaldo = calcularAguinaldo(bruto);
+
+        const neto=
+            bruto-
+            totalDeducciones+
+            aguinaldo;
+
+        body.innerHTML+=`
+        <tr>
+
+            <td>${numero++}</td>
+
+            <td>${emp.nombre}</td>
+
+            <td>${emp.cargo}</td>
+
+            <td>${moneda(salario)}</td>
+
+            <td>${moneda(horasExtras)}</td>
+
+            <td>${moneda(antiguedad)}</td>
+
+            <td>${moneda(bonificaciones)}</td>
+
+            <td>${moneda(otrosIngresos)}</td>
+
+            <td>${moneda(vacaciones)}</td>
+
+            <td>${moneda(bruto)}</td>
+
+            <td>${moneda(inss)}</td>
+
+            <td>${moneda(ir)}</td>
+
+            <td>${moneda(otrasDeducciones)}</td>
+
+            <td>${moneda(totalDeducciones)}</td>
+
+            <td>${moneda(aguinaldo)}</td>
+
+            <td><strong>${moneda(neto)}</strong></td>
+
+        </tr>`;
+
+        Salario+=salario;
+        HE+=horasExtras;
+        Ant+=antiguedad;
+        Bon+=bonificaciones;
+        Otros+=otrosIngresos;
+        Vac+=vacaciones;
+        Bruto+=bruto;
+        INSS+=inss;
+        IR+=ir;
+        OtrasDed+=otrasDeducciones;
+        TotalDed+=totalDeducciones;
+        Aguinaldo+=aguinaldo;
+        Neto+=neto;
+
+        gSalario+=salario;
+        gHE+=horasExtras;
+        gAnt+=antiguedad;
+        gBon+=bonificaciones;
+        gOtros+=otrosIngresos;
+        gVac+=vacaciones;
+        gBruto+=bruto;
+        gINSS+=inss;
+        gIR+=ir;
+        gOtrasDed+=otrasDeducciones;
+        gTotalDed+=totalDeducciones;
+        gAguinaldo+=aguinaldo;
+        gNeto+=neto;
+
+    });
+
+    body.innerHTML+=`
+    <tr style="background:#eef5ff;font-weight:bold;">
+
+        <td colspan="3">TOTAL ${departamentoActual}</td>
+
+        <td>${moneda(Salario)}</td>
+        <td>${moneda(HE)}</td>
+        <td>${moneda(Ant)}</td>
+        <td>${moneda(Bon)}</td>
+        <td>${moneda(Otros)}</td>
+        <td>${moneda(Vac)}</td>
+        <td>${moneda(Bruto)}</td>
+        <td>${moneda(INSS)}</td>
+        <td>${moneda(IR)}</td>
+        <td>${moneda(OtrasDed)}</td>
+        <td>${moneda(TotalDed)}</td>
+        <td>${moneda(Aguinaldo)}</td>
+        <td>${moneda(Neto)}</td>
+
+    </tr>`;
+
+    body.innerHTML+=`
+    <tr style="background:#16324F;color:white;font-weight:bold;">
+
+        <td colspan="3">GRAN TOTAL</td>
+
+        <td>${moneda(gSalario)}</td>
+        <td>${moneda(gHE)}</td>
+        <td>${moneda(gAnt)}</td>
+        <td>${moneda(gBon)}</td>
+        <td>${moneda(gOtros)}</td>
+        <td>${moneda(gVac)}</td>
+        <td>${moneda(gBruto)}</td>
+        <td>${moneda(gINSS)}</td>
+        <td>${moneda(gIR)}</td>
+        <td>${moneda(gOtrasDed)}</td>
+        <td>${moneda(gTotalDed)}</td>
+        <td>${moneda(gAguinaldo)}</td>
+        <td>${moneda(gNeto)}</td>
+
+    </tr>`;
+
+}
+
+function moneda(valor){
+    return valor.toLocaleString("es-NI",{
+        style:"currency",
+        currency:"NIO",
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    });
+}
+
+function mostrarAlerta(mensaje){
+    document.getElementById("mensajeAlerta").textContent = mensaje;
+    document.getElementById("modalAlerta").style.display = "flex";
+}
+
+function cerrarAlerta(){
+    document.getElementById("modalAlerta").style.display = "none";
+}
+
+document.getElementById("tipoNomina").addEventListener("change", function(){
+    localStorage.setItem("tipoNominaSistema", this.value);
+    actualizarDashboard();
+    actualizarNomina();
+});
+
+function cargarConfiguracion() {
+
+    document.getElementById("selectorTema").value =
+        configuracion.tema;
+
+    document.getElementById("tipoNomina").value =
+        configuracion.tipoNomina;
+
+    document.getElementById("metodoAntiguedad").value =
+        configuracion.metodoAntiguedad;
+        
+        actualizarMetodoAntiguedad();
+
+}
+
+function guardarConfiguracion(){
+
+    configuracion.tema =
+        document.getElementById("selectorTema").value;
+
+    configuracion.tipoNomina =
+        document.getElementById("tipoNomina").value;
+
+    configuracion.metodoAntiguedad =
+        document.getElementById("metodoAntiguedad").value;
+
+    localStorage.setItem(
+        "configuracion",
+        JSON.stringify(configuracion)
+    );
+
+    actualizarDashboard();
+    actualizarNomina();
+    actualizarMetodoAntiguedad();
+
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    cargarConfiguracion();
+
+    document.getElementById("selectorTema")
+        .addEventListener("change", guardarConfiguracion);
+
+    document.getElementById("tipoNomina")
+        .addEventListener("change", guardarConfiguracion);
+
+    document.getElementById("metodoAntiguedad")
+        .addEventListener("change", guardarConfiguracion);
+
+});
+
+function actualizarMetodoAntiguedad(){
+
+    const grupo =
+        document.getElementById("grupoPorcentajeAntiguedad");
+
+    if(configuracion.metodoAntiguedad === "manual"){
+
+        grupo.style.display = "block";
+
+    }else{
+
+        grupo.style.display = "none";
+
+    }
+
+}
+
+</script>
+
+</script>
+
+<!-- MODAL ELIMINAR -->
+
+<div id="modalEliminar" class="modal">
+
+    <div class="modal-content">
+
+        <h2>⚠ Eliminar trabajador</h2>
+
+        <p>
+            ¿Está seguro de eliminar este trabajador?
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+            class="btn-cancelar"
+            onclick="cerrarModal()">
+
+                Cancelar
+
+            </button>
+
+            <button
+            class="btn-eliminar"
+            onclick="confirmarEliminar()">
+
+                Eliminar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="modalAlerta" class="modal">
+
+    <div class="modal-content">
+
+        <h2 id="tituloAlerta">⚠ Atención</h2>
+
+        <p id="mensajeAlerta"></p>
+
+        <div class="modal-buttons">
+
+            <button
+            class="btn-cancelar"
+            onclick="cerrarAlerta()">
+
+                Entendido
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
